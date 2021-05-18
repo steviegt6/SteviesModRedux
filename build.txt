@@ -1,0 +1,3 @@
+displayName   = Stevie's Mod Redux
+author        = convicted tomatophile
+version       = 1.0.0
