@@ -11,6 +11,7 @@ namespace SteviesModRedux.Common.Systems
 {
     public sealed class LocalizationSystem : ModSystem
     {
+        [NullifyUponUnload]
         public static string[] ExistingJsonFiles => new[]
         {
             "UI.json",

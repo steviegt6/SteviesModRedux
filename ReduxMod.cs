@@ -1,9 +1,5 @@
 using System;
-using System.Linq;
-using System.Reflection;
 using SteviesModRedux.Common.Systems;
-using SteviesModRedux.Common.UnloadContext;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SteviesModRedux
@@ -31,21 +27,6 @@ namespace SteviesModRedux
             }
 
             return null;
-        }
-
-        public override void Unload()
-        {
-            foreach (Type type in Code.GetTypes())
-            {
-                foreach (FieldInfo field in type.GetFields()
-                    .Where(x => x.GetCustomAttribute<SetUponUnloadAttribute>() != null && x.IsStatic))
-                    field.SetValue(null, field.GetCustomAttribute<SetUponUnloadAttribute>()!.Value);
-
-                foreach (PropertyInfo property in type.GetProperties()
-                    .Where(x => x.GetCustomAttribute<SetUponUnloadAttribute>() != null && x.CanWrite &&
-                                (x.SetMethod?.IsStatic ?? false)))
-                    property.SetValue(null, property.GetCustomAttribute<SetUponUnloadAttribute>()!.Value);
-            }
         }
     }
 }
