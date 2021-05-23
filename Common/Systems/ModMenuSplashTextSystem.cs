@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoMod.RuntimeDetour;
 using ReLogic.Content;
 using ReLogic.Graphics;
+using SteviesModRedux.Common.UnloadContext;
 using SteviesModRedux.Common.Utilities;
 using Terraria;
 using Terraria.Audio;
@@ -20,6 +21,7 @@ namespace SteviesModRedux.Common.Systems
         // TODO: JSON config
         public static bool ShouldDrawSplashText { get; set; } = true;
 
+        [NullifyUponUnload]
         public static string DrawnSplashText { get; set; } = "nil";
 
         public static float TextScale { get; set; } = 1f;
@@ -134,11 +136,11 @@ namespace SteviesModRedux.Common.Systems
         {
             DrawnSplashText = string.Format(LocalizationSystem
                     .SplashTexts[Main.rand.Next(LocalizationSystem.SplashTexts.Count)]
-                    .Value,
+                    .GetTranslation(Language.ActiveCulture),
                 Environment.MachineName.ToUpper(),
                 LocalizationSystem.SplashTexts.Count + 1,
                 Environment.MachineName,
-                ChildSafety.Disabled ? "LETSFUCKINGGOOOOOOOOOOOOOO" : "LETSFREAKINGGOOOOOOOOOOOOOO",
+                ChildSafety.Disabled ? "LETSFUCKINGGOOOOOOOOOOOOOO" : "LETSFREAKINGGOOOOOOOOOOOOOO", // No need to localize these, IIRC
                 DateTime.Now.Year);
         }
     }

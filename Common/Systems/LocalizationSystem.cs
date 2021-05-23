@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SteviesModRedux.Common.UnloadContext;
 using SteviesModRedux.Common.Utilities;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -19,12 +20,14 @@ namespace SteviesModRedux.Common.Systems
         /// <summary>
         ///     A dictionary of automatically-registered translations. Keys are localization keys.
         /// </summary>
+        [NullifyUponUnload]
         public static Dictionary<string, ModTranslation> AutoRegisteredTranslations { get; private set; }
 
         /// <summary>
         ///     List of all Splash Texts. Most are automatically-registered.
         /// </summary>
-        public static List<LocalizedText> SplashTexts { get; private set; }
+        [NullifyUponUnload]
+        public static List<ModTranslation> SplashTexts { get; private set; }
 
         public override void OnModLoad()
         {
@@ -48,18 +51,30 @@ namespace SteviesModRedux.Common.Systems
                     // ignore if localization file doesn't exist
                 }
             }
+
+            foreach (ModTranslation translation in AutoRegisteredTranslations.Values)
+                Mod.AddTranslation(translation);
         }
 
         public override void PostSetupContent()
         {
-            SplashTexts = new List<LocalizedText>();
+            SplashTexts = new List<ModTranslation>();
 
             // In post-setup content to allow other mods to register localizations
             // following the same format, if they wish to register their own
-            // ()
-            foreach (LocalizedText splashText in LanguageManager.Instance.FindAll(
-                (key, _) => key.Contains(".Splashes.")))
-                SplashTexts.Add(splashText);
+            // (https://github.com/Steviegt6/SteviesModRedux/wiki/Splash-Text)
+            foreach (Mod mod in ModLoader.Mods)
+            {
+                ICollection<ModTranslation> modTranslations = (typeof(Mod)
+                    .GetField("translations", ReflectionUtilities.AllFlags)
+                    ?.GetValue(mod) as IDictionary<string, ModTranslation>)?.Values;
+
+                if (modTranslations == null) 
+                    continue;
+
+                foreach (ModTranslation translation in modTranslations.Where(x => x.Key.Contains(".Splashes.")))
+                    SplashTexts.Add(translation);
+            }
 
             ModMenuSplashTextSystem.CycleText();
         }
