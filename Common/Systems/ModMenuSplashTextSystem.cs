@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.RuntimeDetour;
@@ -31,10 +30,10 @@ namespace SteviesModRedux.Common.Systems
         {
             MonoModHooks.RequestNativeAccess();
 
-            new Hook(typeof(ModLoader).Assembly.GetType("Terraria.ModLoader.MenuLoader")!
-                    .GetMethod("UpdateAndDrawModMenu",
-                        BindingFlags.Static | BindingFlags.NonPublic),
-                typeof(ModMenuSplashTextSystem).GetMethodForced("OverlaySplashText")).Apply();
+            new Hook(
+                typeof(ModLoader).Assembly.GetType("Terraria.ModLoader.MenuLoader")!.GetMethodForced(
+                    "UpdateAndDrawModMenu"),
+                typeof(ModMenuSplashTextSystem).GetMethodForced(nameof(OverlaySplashText))).Apply();
         }
 
         private static void OverlaySplashText(Action<SpriteBatch, GameTime, Color, float, float> orig,
@@ -52,6 +51,7 @@ namespace SteviesModRedux.Common.Systems
             string text = ShouldDrawSplashText
                 ? Language.GetTextValue("Mods.SteviesModRedux.UI.EnabledSplashText")
                 : Language.GetTextValue("Mods.SteviesModRedux.UI.DisabledSplashText");
+
             Vector2 textSize = font.MeasureString(text);
             Rectangle clickArea = Main.menuMode == MenuID.Title
                 ? new Rectangle((int) (Main.screenWidth / 2f - textSize.X / 2),
@@ -134,7 +134,7 @@ namespace SteviesModRedux.Common.Systems
         {
             DrawnSplashText = string.Format(LocalizationSystem
                     .SplashTexts[Main.rand.Next(LocalizationSystem.SplashTexts.Count)]
-                    .GetTranslation(Language.ActiveCulture),
+                    .Value,
                 Environment.MachineName.ToUpper(),
                 LocalizationSystem.SplashTexts.Count + 1,
                 Environment.MachineName,

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using Terraria;
-using Terraria.GameContent;
+using SteviesModRedux.Common.Utilities;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -18,14 +16,19 @@ namespace SteviesModRedux.Common.Systems
             "Splashes.json"
         };
 
+        /// <summary>
+        ///     A dictionary of automatically-registered translations. Keys are localization keys.
+        /// </summary>
         public static Dictionary<string, ModTranslation> AutoRegisteredTranslations { get; private set; }
 
-        public static List<ModTranslation> SplashTexts { get; private set; }
+        /// <summary>
+        ///     List of all Splash Texts. Most are automatically-registered.
+        /// </summary>
+        public static List<LocalizedText> SplashTexts { get; private set; }
 
         public override void OnModLoad()
         {
             AutoRegisteredTranslations = new Dictionary<string, ModTranslation>();
-            SplashTexts = new List<ModTranslation>();
 
             foreach (string culture in GetCultures())
             foreach (string fileName in ExistingJsonFiles)
@@ -34,7 +37,7 @@ namespace SteviesModRedux.Common.Systems
                 {
                     using Stream stream = Mod.GetFileStream(GetFilePath(culture, fileName));
                     foreach ((string s, Dictionary<string, string> dictionary) in
-                        DeserializeJsonFromStream<Dictionary<string, Dictionary<string, string>>>(stream))
+                        JsonUtilities.DeserializeJsonFromStream<Dictionary<string, Dictionary<string, string>>>(stream))
                     {
                         foreach ((string key, string value) in dictionary)
                             GetOrCreateTranslation($"{s}.{key}").AddTranslation(culture, value);
@@ -45,19 +48,26 @@ namespace SteviesModRedux.Common.Systems
                     // ignore if localization file doesn't exist
                 }
             }
+        }
 
-            foreach (ModTranslation mTrans in AutoRegisteredTranslations.Values)
-            {
-                Mod.AddTranslation(mTrans);
+        public override void PostSetupContent()
+        {
+            SplashTexts = new List<LocalizedText>();
 
-                if (mTrans.Key.Contains(".Splashes."))
-                    SplashTexts.Add(mTrans);
-            }
+            // In post-setup content to allow other mods to register localizations
+            // following the same format, if they wish to register their own
+            // ()
+            foreach (LocalizedText splashText in LanguageManager.Instance.FindAll(
+                (key, _) => key.Contains(".Splashes.")))
+                SplashTexts.Add(splashText);
 
             ModMenuSplashTextSystem.CycleText();
         }
 
-        private ModTranslation GetOrCreateTranslation(string key)
+        /// <summary>
+        ///     Creates or gets a translation from <see cref="AutoRegisteredTranslations"/>. If a translation is created, it will be added to <see cref="AutoRegisteredTranslations"/>.
+        /// </summary>
+        public ModTranslation GetOrCreateTranslation(string key)
         {
             if (AutoRegisteredTranslations.ContainsKey(key))
                 return AutoRegisteredTranslations[key];
@@ -67,16 +77,15 @@ namespace SteviesModRedux.Common.Systems
             return translation;
         }
 
-        public static T DeserializeJsonFromStream<T>(Stream stream)
-        {
-            using StreamReader reader = new(stream);
-            using JsonTextReader textReader = new(reader);
-            return new JsonSerializer().Deserialize<T>(textReader);
-        }
-
+        /// <summary>
+        ///     Returns an array containing the names of all localizable cultures.
+        /// </summary>
         public static string[] GetCultures() => Enum.GetValues<GameCulture.CultureName>()
             .Select(name => GameCulture.FromCultureName(name).Name).ToArray();
 
+        /// <summary>
+        ///     Returns the would-be path for any file contained in SM:R's "Localization" sub-directory, given the culture.
+        /// </summary>
         public static string GetFilePath(string culture, string fileName) =>
             Path.Combine("Localization", culture, fileName);
     }
