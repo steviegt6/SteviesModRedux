@@ -6,7 +6,7 @@ namespace SteviesModRedux.Content.Projectiles
     {
         public override string Texture =>
             ModContent.TextureExists(base.Texture) ? base.Texture : "ModLoader/UnloadedItem";
-        
+
 
         public sealed override void SetStaticDefaults()
         {

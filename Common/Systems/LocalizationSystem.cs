@@ -70,7 +70,7 @@ namespace SteviesModRedux.Common.Systems
                     .GetField("translations", ReflectionUtilities.AllFlags)
                     ?.GetValue(mod) as IDictionary<string, ModTranslation>)?.Values;
 
-                if (modTranslations == null) 
+                if (modTranslations == null)
                     continue;
 
                 foreach (ModTranslation translation in modTranslations.Where(x => x.Key.Contains(".Splashes.")))

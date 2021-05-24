@@ -21,8 +21,7 @@ namespace SteviesModRedux.Common.Systems
         // TODO: JSON config
         public static bool ShouldDrawSplashText { get; set; } = true;
 
-        [NullifyUponUnload]
-        public static string DrawnSplashText { get; set; } = "nil";
+        [NullifyUponUnload] public static string DrawnSplashText { get; set; } = "nil";
 
         public static float TextScale { get; set; } = 1f;
 
@@ -140,7 +139,9 @@ namespace SteviesModRedux.Common.Systems
                 Environment.MachineName.ToUpper(),
                 LocalizationSystem.SplashTexts.Count + 1,
                 Environment.MachineName,
-                ChildSafety.Disabled ? "LETSFUCKINGGOOOOOOOOOOOOOO" : "LETSFREAKINGGOOOOOOOOOOOOOO", // No need to localize these, IIRC
+                ChildSafety.Disabled
+                    ? "LETSFUCKINGGOOOOOOOOOOOOOO"
+                    : "LETSFREAKINGGOOOOOOOOOOOOOO", // No need to localize these, IIRC
                 DateTime.Now.Year);
         }
     }

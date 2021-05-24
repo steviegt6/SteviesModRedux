@@ -7,7 +7,7 @@ namespace SteviesModRedux.Content.Items.Consumable.Food
     {
         public override int FoodBuff => BuffID.Poisoned;
 
-        public override int BuffDuration => 60 * 1000;
+        public override int BuffDuration => 60 * 60;
 
         public override Color[] FoodParticleColors => new[]
             {Color.Green, Color.GreenYellow, Color.DarkOliveGreen};
