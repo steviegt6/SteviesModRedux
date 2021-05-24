@@ -1,4 +1,5 @@
 using System;
+using SteviesModRedux.Common.Sets;
 using SteviesModRedux.Common.Systems;
 using Terraria.ModLoader;
 
@@ -6,6 +7,18 @@ namespace SteviesModRedux
 {
     public sealed class ReduxMod : Mod
     {
+        public static ReduxMod Instance { get; private set; }
+
+        public ReduxMod()
+        {
+            Instance = this;
+        }
+
+        public override void Load()
+        {
+            ExtraItemTags.Load(this);
+        }
+
         public override object Call(params object[] args)
         {
             try

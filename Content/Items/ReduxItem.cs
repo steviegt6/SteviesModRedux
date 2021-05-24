@@ -1,4 +1,7 @@
-﻿using Terraria.GameContent.Creative;
+﻿using System.Collections.Generic;
+using Terraria;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace SteviesModRedux.Content.Items
@@ -27,6 +30,15 @@ namespace SteviesModRedux.Content.Items
         }
 
         public virtual void AbstractSetDefaults()
+        {
+        }
+
+        public sealed override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            SafeModifyTooltips(tooltips);
+        }
+
+        public virtual void SafeModifyTooltips(List<TooltipLine> tooltips)
         {
         }
     }
