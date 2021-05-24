@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using SteviesModRedux.Common.Utilities;
+using Terraria.ID;
 
 namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 {
@@ -18,6 +19,14 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
             Item.useAnimation = Item.useTime = 15;
             Item.UseSound = SoundID.Item41;
             Item.damage += 50;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredients(ItemID.Handgun, ItemID.CoinGun)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }
