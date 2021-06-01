@@ -1,6 +1,11 @@
 using System;
+using Microsoft.Xna.Framework.Graphics;
 using SteviesModRedux.Common.Sets;
 using SteviesModRedux.Common.Systems;
+using SteviesModRedux.Content.Items.Dyes.Unused;
+using Terraria;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace SteviesModRedux
@@ -16,6 +21,7 @@ namespace SteviesModRedux
 
         public override void Load()
         {
+            LoadDyes();
             ExtraItemTags.Load(this);
         }
 
@@ -40,6 +46,18 @@ namespace SteviesModRedux
             }
 
             return null;
+        }
+
+        private void LoadDyes()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            Ref<Effect> waveRef = new(GetEffect("Effects/Wavy").Value);
+            const string wavePass = "WavyPass";
+
+            GameShaders.Armor.BindShader(ModContent.ItemType<WavyDye>(),
+                new ArmorShaderData(waveRef, wavePass));
         }
     }
 }
