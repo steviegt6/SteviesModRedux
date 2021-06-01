@@ -6,24 +6,11 @@ namespace SteviesModRedux.Content.Items.Weapons
     {
         public override int SacrificeCount => 1;
 
-        public sealed override void AbstractSetStaticDefaults()
+        public override void SetStaticDefaults()
         {
+            base.SetStaticDefaults();
+
             ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true;
-
-            SafeSetStaticDefaults();
-        }
-
-        public virtual void SafeSetStaticDefaults()
-        {
-        }
-
-        public sealed override void AbstractSetDefaults()
-        {
-            SafeSetDefaults();
-        }
-
-        public virtual void SafeSetDefaults()
-        {
         }
     }
 }

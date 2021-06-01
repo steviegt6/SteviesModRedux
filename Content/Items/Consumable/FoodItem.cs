@@ -16,30 +16,22 @@ namespace SteviesModRedux.Content.Items.Consumable
 
         public abstract Color[] FoodParticleColors { get; }
 
-        public sealed override void AbstractSetStaticDefaults()
+        public override void SetStaticDefaults()
         {
+            base.SetStaticDefaults();
+
             ItemID.Sets.IsFood[Type] = true;
             ItemID.Sets.FoodParticleColors[Type] = FoodParticleColors;
 
             Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
-
-            SafeSetStaticDefaults();
         }
 
-        public virtual void SafeSetStaticDefaults()
+        public sealed override void SetDefaults()
         {
-        }
-
-        public sealed override void AbstractSetDefaults()
-        {
-            SafeSetDefaults();
+            base.SetDefaults();
 
             Item.DefaultToFood(Item.width, Item.height, FoodBuff, BuffDuration);
             Item.SetShopValues(ItemRarityColor.Blue1, Item.buyPrice(gold: 1));
-        }
-
-        public virtual void SafeSetDefaults()
-        {
         }
     }
 }

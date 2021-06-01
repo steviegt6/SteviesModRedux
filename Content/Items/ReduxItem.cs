@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Terraria.GameContent.Creative;
+﻿using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace SteviesModRedux.Content.Items
@@ -11,33 +10,9 @@ namespace SteviesModRedux.Content.Items
 
         public abstract int SacrificeCount { get; }
 
-        public sealed override void SetStaticDefaults()
+        public override void SetStaticDefaults()
         {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = SacrificeCount;
-
-            AbstractSetStaticDefaults();
-        }
-
-        public virtual void AbstractSetStaticDefaults()
-        {
-        }
-
-        public sealed override void SetDefaults()
-        {
-            AbstractSetDefaults();
-        }
-
-        public virtual void AbstractSetDefaults()
-        {
-        }
-
-        public sealed override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            SafeModifyTooltips(tooltips);
-        }
-
-        public virtual void SafeModifyTooltips(List<TooltipLine> tooltips)
-        {
         }
     }
 }

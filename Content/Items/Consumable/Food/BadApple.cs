@@ -12,8 +12,10 @@ namespace SteviesModRedux.Content.Items.Consumable.Food
         public override Color[] FoodParticleColors => new[]
             {Color.Green, Color.GreenYellow, Color.DarkOliveGreen};
 
-        public override void SafeSetStaticDefaults()
+        public override void SetStaticDefaults()
         {
+            base.SetStaticDefaults();
+
             DisplayName.SetDefault("Bad Apple (lol)");
             Tooltip.SetDefault(":(");
         }
