@@ -5,6 +5,8 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 {
     public class CoinPistol : WeaponItem
     {
+        public static int[] Ingredients = {ItemID.Handgun, ItemID.CoinGun};
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -23,6 +25,7 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
             Item.useAnimation = Item.useTime = 15;
             Item.UseSound = SoundID.Item41;
             Item.damage += 50;
+            Item.value = GetValueFromItems(Ingredients);
         }
 
         public override void AddRecipes()
@@ -30,7 +33,7 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
             // base.CreateRecipe();
 
             CreateRecipe()
-                .AddIngredients(ItemID.Handgun, ItemID.CoinGun)
+                .AddIngredients(Ingredients)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
