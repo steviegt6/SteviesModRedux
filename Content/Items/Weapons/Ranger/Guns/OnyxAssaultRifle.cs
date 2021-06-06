@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using SteviesModRedux.Common.Utilities;
 using Terraria;
 using Terraria.DataStructures;
@@ -16,6 +15,8 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
             base.SetStaticDefaults();
 
             DisplayName.SetDefault("Onyx Assault Rifle");
+            Tooltip.SetDefault("Three-round burst" +
+                               "\nOnly the first shot consumes ammo");
         }
 
         public override void SetDefaults()
