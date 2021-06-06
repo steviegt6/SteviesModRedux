@@ -21,14 +21,14 @@ namespace SteviesModRedux.Common.Utilities
         public static TFieldType GetField<TType, TFieldType>(this TType obj, string field) =>
             (TFieldType) typeof(TType).GetField(field, AllFlags)?.GetValue(obj);
 
-        public static void SetField<TType, TFieldType>(this TType obj, string property, TFieldType value) =>
-            typeof(TType).GetField(property, AllFlags)?.SetValue(obj, value);
+        public static void SetField<TType, TFieldType>(this TType obj, string field, TFieldType value) =>
+            typeof(TType).GetField(field, AllFlags)?.SetValue(obj, value);
 
-        public static TFieldType GetProperty<TType, TFieldType>(this TType obj, string field) =>
-            (TFieldType) typeof(TType).GetProperty(field, AllFlags)?.GetValue(obj);
+        public static TFieldType GetProperty<TType, TFieldType>(this TType obj, string property) =>
+            (TFieldType) typeof(TType).GetProperty(property, AllFlags)?.GetValue(obj);
 
-        public static void SetProperty<TType, TFieldType>(this TType obj, string setProperty, TFieldType value) =>
-            typeof(TType).GetProperty(setProperty, AllFlags)?.SetValue(obj, value);
+        public static void SetProperty<TType, TFieldType>(this TType obj, string property, TFieldType value) =>
+            typeof(TType).GetProperty(property, AllFlags)?.SetValue(obj, value);
 
         public static MethodInfo GetMethod<TType>(this TType obj, string method) =>
             typeof(TType).GetMethodForced(method);
