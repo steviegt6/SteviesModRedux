@@ -57,6 +57,8 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
             return false;
         }
 
+        public override bool ConsumeAmmo(Player player) => player.itemAnimation > Item.useAnimation - 2;
+
         public override void AddRecipes()
         {
             base.AddRecipes();
