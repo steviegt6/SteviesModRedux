@@ -4,7 +4,7 @@ namespace SteviesModRedux.Content.Items.Weapons
 {
     public abstract class WeaponItem : ReduxItem
     {
-        public override int SacrificeCount => 1;
+        public override ItemSet ValueSet => base.ValueSet.SetSacrificeCount(1);
 
         public override void SetStaticDefaults()
         {

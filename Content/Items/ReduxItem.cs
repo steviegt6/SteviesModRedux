@@ -7,10 +7,33 @@ namespace SteviesModRedux.Content.Items
 {
     public abstract class ReduxItem : ModItem
     {
+        public class ItemSet
+        {
+            public int SacrificeCount { get; protected set; }
+
+            public ItemSet SetSacrificeCount(int sacrificeCount)
+            {
+                SacrificeCount = sacrificeCount;
+                return this;
+            }
+        }
+
         public override string Texture =>
             ModContent.RequestIfExists<Texture2D>(base.Texture, out _) ? base.Texture : "ModLoader/UnloadedItem";
 
-        public abstract int SacrificeCount { get; }
+        protected ItemSet ItemValues;
+
+        public virtual ItemSet ValueSet
+        {
+            get => ItemValues ??= new ItemSet();
+
+            set => ItemValues = value;
+        }
+
+        public override void SetStaticDefaults()
+        {
+            SetItemSetValues();
+        }
 
         public virtual int GetValueFromItems(params int[] items)
         {
@@ -26,9 +49,9 @@ namespace SteviesModRedux.Content.Items
             return total;
         }
 
-        public override void SetStaticDefaults()
+        public virtual void SetItemSetValues()
         {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = SacrificeCount;
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = ValueSet.SacrificeCount;
         }
     }
 }

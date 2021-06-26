@@ -8,13 +8,13 @@ namespace SteviesModRedux.Content.Items.Consumable
 {
     public abstract class FoodItem : ReduxItem
     {
-        public override int SacrificeCount => 5;
-
         public abstract int FoodBuff { get; }
 
         public abstract int BuffDuration { get; }
 
         public abstract Color[] FoodParticleColors { get; }
+
+        public override ItemSet ValueSet => base.ValueSet.SetSacrificeCount(5);
 
         public override void SetStaticDefaults()
         {

@@ -4,9 +4,9 @@ namespace SteviesModRedux.Content.Items.Dyes
 {
     public abstract class UnusedDyeItem : ReduxItem
     {
-        public sealed override int SacrificeCount => 1;
-
         public override string Texture => $"Terraria/Images/Item_{ItemID.BlackAndWhiteDye}";
+
+        public override ItemSet ValueSet => base.ValueSet.SetSacrificeCount(1);
 
         public override void SetDefaults()
         {
