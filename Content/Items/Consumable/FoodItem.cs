@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
-using Terraria.ID;
 
 namespace SteviesModRedux.Content.Items.Consumable
 {
@@ -14,14 +13,12 @@ namespace SteviesModRedux.Content.Items.Consumable
 
         public abstract Color[] FoodParticleColors { get; }
 
-        public override ItemSet ValueSet => base.ValueSet.SetSacrificeCount(5);
+        public override ItemSet ValueSet => base.ValueSet.SetSacrificeCount(5).SetIsFood(true)
+            .SetFoodParticleColors(FoodParticleColors);
 
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-
-            ItemID.Sets.IsFood[Type] = true;
-            ItemID.Sets.FoodParticleColors[Type] = FoodParticleColors;
 
             Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
         }
