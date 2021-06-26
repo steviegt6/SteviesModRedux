@@ -24,9 +24,9 @@ namespace SteviesModRedux.Content.Items
 
             public virtual bool ForStuffCannon { get; protected set; }
 
-            public virtual bool? CanBeQuickUsedOnGamePad { get; protected set; } = null;
+            public virtual bool? CanBeQuickUsedOnGamePad { get; protected set; }
 
-            public virtual bool? ForcesBreaksSleeping { get; protected set; } = null;
+            public virtual bool? ForcesBreaksSleeping { get; protected set; }
 
             public virtual bool SkipsInitialUseSound { get; protected set; }
 
@@ -34,7 +34,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual bool IsAKite { get; protected set; }
 
-            public virtual bool? ForceConsumption { get; protected set; } = null;
+            public virtual bool? ForceConsumption { get; protected set; }
 
             public virtual bool HasAProjectileThatHasAUsabilityCheck { get; protected set; }
 
@@ -42,7 +42,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual bool NonColorfulDyeItem { get; protected set; }
 
-            public virtual FlowerPacketInfo FlowerPacketInfo { get; protected set; } = null;
+            public virtual FlowerPacketInfo FlowerPacketInfo { get; protected set; }
 
             public virtual bool IgnoresEncumberingStone { get; protected set; }
 
@@ -64,7 +64,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual Color[] DrinkParticleColors { get; protected set; } = Array.Empty<Color>();
 
-            public virtual ItemID.BannerEffect BannerStrength { get; protected set; } = new();
+            public virtual ItemID.BannerEffect BannerStrength { get; protected set; }
 
             public virtual int KillsToBanner { get; protected set; } = 50;
 
@@ -134,7 +134,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual int LockOnAimAbove { get; protected set; }
 
-            public virtual float? LockOnAimCompensation { get; protected set; } = null;
+            public virtual float? LockOnAimCompensation { get; protected set; }
 
             public virtual bool SingleUseInGamePad { get; protected set; }
 
@@ -585,7 +585,8 @@ namespace SteviesModRedux.Content.Items
         public virtual void SetItemSetValues()
         {
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = ValueSet.AllowRepeatedRightClick;
-            ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[Type] = ValueSet.CountsAsBombsForDemolitionistToSpawn;
+            ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[Type] =
+                ValueSet.CountsAsBombsForDemolitionistToSpawn;
             ItemID.Sets.NewItemSpawnPriority[Type] = ValueSet.ItemSpawnPriority;
             if (ValueSet.ForStuffCannon)
                 ItemID.Sets.ItemsForStuffCannon = ItemID.Sets.ItemsForStuffCannon.ArrayAdd(Type);
@@ -606,7 +607,8 @@ namespace SteviesModRedux.Content.Items
             ItemID.Sets.IsDrill[Type] = ValueSet.IsDrill;
             ItemID.Sets.IsChainsaw[Type] = ValueSet.IsChainsaw;
             ItemID.Sets.IsPaintScraper[Type] = ValueSet.IsPaintScraper;
-            ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[Type] = ValueSet.SummonerWeaponThatScalesWithAttackSpeed;
+            ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[Type] =
+                ValueSet.SummonerWeaponThatScalesWithAttackSpeed;
             ItemID.Sets.IsFood[Type] = ValueSet.IsFood;
             ItemID.Sets.FoodParticleColors[Type] = ValueSet.FoodParticleColors;
             ItemID.Sets.DrinkParticleColors[Type] = ValueSet.DrinkParticleColors;
