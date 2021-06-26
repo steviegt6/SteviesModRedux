@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SteviesModRedux.Common.Utilities;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -45,7 +46,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual bool IgnoresEncumberingStone { get; protected set; }
 
-            public virtual float ToolTiPDamageMultiplier { get; protected set; } = 1f;
+            public virtual float ToolTipDamageMultiplier { get; protected set; } = 1f;
 
             public virtual bool IsAPickup { get; protected set; }
 
@@ -53,7 +54,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual bool IsChainsaw { get; protected set; }
 
-            public virtual bool IsPainScraper { get; protected set; }
+            public virtual bool IsPaintScraper { get; protected set; }
 
             public virtual bool SummonerWeaponThatScalesWithAttackSpeed { get; protected set; }
 
@@ -75,7 +76,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual bool IsFishingCrate { get; protected set; }
 
-            public virtual bool IsFishingCreateHardMode { get; protected set; }
+            public virtual bool IsFishingCrateHardMode { get; protected set; }
 
             public virtual bool CanBePlacedOnWeaponRacks { get; protected set; }
 
@@ -95,7 +96,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual int ExtractinatorMode { get; protected set; } = -1;
 
-            public virtual bool ExoticPlantForDyTrade { get; protected set; }
+            public virtual bool ExoticPlantForDyeTrade { get; protected set; }
 
             public virtual bool NebulaPickup { get; protected set; }
 
@@ -135,7 +136,7 @@ namespace SteviesModRedux.Content.Items
 
             public virtual float? LockOnAimCompensation { get; protected set; } = null;
 
-            public virtual bool SingleUseGamePad { get; protected set; }
+            public virtual bool SingleUseInGamePad { get; protected set; }
 
             public virtual bool Torch { get; protected set; }
 
@@ -245,7 +246,7 @@ namespace SteviesModRedux.Content.Items
 
             public ItemSet SetToolTiPDamageMultiplier(float value)
             {
-                ToolTiPDamageMultiplier = value;
+                ToolTipDamageMultiplier = value;
                 return this;
             }
 
@@ -269,7 +270,7 @@ namespace SteviesModRedux.Content.Items
 
             public ItemSet SetIsPainScraper(bool value)
             {
-                IsPainScraper = value;
+                IsPaintScraper = value;
                 return this;
             }
 
@@ -335,7 +336,7 @@ namespace SteviesModRedux.Content.Items
 
             public ItemSet SetIsFishingCreateHardMode(bool value)
             {
-                IsFishingCreateHardMode = value;
+                IsFishingCrateHardMode = value;
                 return this;
             }
 
@@ -395,7 +396,7 @@ namespace SteviesModRedux.Content.Items
 
             public ItemSet SetExoticPlantForDyTrade(bool value)
             {
-                ExoticPlantForDyTrade = value;
+                ExoticPlantForDyeTrade = value;
                 return this;
             }
 
@@ -515,7 +516,7 @@ namespace SteviesModRedux.Content.Items
 
             public ItemSet SetSingleUseGamePad(bool value)
             {
-                SingleUseGamePad = value;
+                SingleUseInGamePad = value;
                 return this;
             }
 
@@ -583,6 +584,74 @@ namespace SteviesModRedux.Content.Items
 
         public virtual void SetItemSetValues()
         {
+            ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = ValueSet.AllowRepeatedRightClick;
+            ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[Type] = ValueSet.CountsAsBombsForDemolitionistToSpawn;
+            ItemID.Sets.NewItemSpawnPriority[Type] = ValueSet.ItemSpawnPriority;
+            if (ValueSet.ForStuffCannon)
+                ItemID.Sets.ItemsForStuffCannon = ItemID.Sets.ItemsForStuffCannon.ArrayAdd(Type);
+            ItemID.Sets.CanBeQuickusedOnGamepad[Type] = ValueSet.CanBeQuickUsedOnGamePad;
+            ItemID.Sets.ForcesBreaksSleeping[Type] = ValueSet.ForcesBreaksSleeping;
+            ItemID.Sets.SkipsInitialUseSound[Type] = ValueSet.SkipsInitialUseSound;
+            ItemID.Sets.UsesCursedByPlanteraTooltip[Type] = ValueSet.UsesCursedByPlanteraTooltip;
+            ItemID.Sets.IsAKite[Type] = ValueSet.IsAKite;
+            ItemID.Sets.ForceConsumption[Type] = ValueSet.ForceConsumption;
+            ItemID.Sets.HasAProjectileThatHasAUsabilityCheck[Type] = ValueSet.HasAProjectileThatHasAUsabilityCheck;
+            ItemID.Sets.CanGetPrefixes[Type] = ValueSet.CanGetPrefixes;
+            if (ValueSet.NonColorfulDyeItem)
+                ItemID.Sets.NonColorfulDyeItems.Add(Type);
+            ItemID.Sets.flowerPacketInfo[Type] = ValueSet.FlowerPacketInfo;
+            ItemID.Sets.IgnoresEncumberingStone[Type] = ValueSet.IgnoresEncumberingStone;
+            ItemID.Sets.ToolTipDamageMultiplier[Type] = ValueSet.ToolTipDamageMultiplier;
+            ItemID.Sets.IsAPickup[Type] = ValueSet.IsAPickup;
+            ItemID.Sets.IsDrill[Type] = ValueSet.IsDrill;
+            ItemID.Sets.IsChainsaw[Type] = ValueSet.IsChainsaw;
+            ItemID.Sets.IsPaintScraper[Type] = ValueSet.IsPaintScraper;
+            ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[Type] = ValueSet.SummonerWeaponThatScalesWithAttackSpeed;
+            ItemID.Sets.IsFood[Type] = ValueSet.IsFood;
+            ItemID.Sets.FoodParticleColors[Type] = ValueSet.FoodParticleColors;
+            ItemID.Sets.DrinkParticleColors[Type] = ValueSet.DrinkParticleColors;
+            ItemID.Sets.BannerStrength[Type] = ValueSet.BannerStrength;
+            ItemID.Sets.KillsToBanner[Type] = ValueSet.KillsToBanner;
+            ItemID.Sets.CanFishInLava[Type] = ValueSet.CanFishInLava;
+            ItemID.Sets.IsLavaBait[Type] = ValueSet.IsLavaBait;
+            ItemID.Sets.ItemSpawnDecaySpeed[Type] = ValueSet.ItemSpawnDecaySpeed;
+            ItemID.Sets.IsFishingCrate[Type] = ValueSet.IsFishingCrate;
+            ItemID.Sets.IsFishingCrateHardmode[Type] = ValueSet.IsFishingCrateHardMode;
+            ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = ValueSet.CanBePlacedOnWeaponRacks;
+            ItemID.Sets.TextureCopyLoad[Type] = ValueSet.TextureCopyLoad;
+            ItemID.Sets.TrapSigned[Type] = ValueSet.TrapSigned;
+            ItemID.Sets.Deprecated[Type] = ValueSet.Deprecated;
+            ItemID.Sets.NeverAppearsAsNewInInventory[Type] = ValueSet.NeverAppearsAsNewInInventory;
+            ItemID.Sets.CommonCoin[Type] = ValueSet.CommonCoin;
+            ItemID.Sets.ItemIconPulse[Type] = ValueSet.ItemIconPulse;
+            ItemID.Sets.ItemNoGravity[Type] = ValueSet.ItemNoGravity;
+            ItemID.Sets.ExtractinatorMode[Type] = ValueSet.ExtractinatorMode;
+            ItemID.Sets.ExoticPlantsForDyeTrade[Type] = ValueSet.ExoticPlantForDyeTrade;
+            ItemID.Sets.NebulaPickup[Type] = ValueSet.NebulaPickup;
+            ItemID.Sets.AnimatesAsSoul[Type] = ValueSet.AnimatesAsSoul;
+            ItemID.Sets.gunProj[Type] = ValueSet.GunProjectile;
+            ItemID.Sets.SortingPriorityBossSpawns[Type] = ValueSet.SortingPriorityBossSpawns;
+            ItemID.Sets.SortingPriorityWiring[Type] = ValueSet.SortingPriorityWiring;
+            ItemID.Sets.SortingPriorityMaterials[Type] = ValueSet.SortingPriorityMaterials;
+            ItemID.Sets.SortingPriorityExtractibles[Type] = ValueSet.SortingPriorityExtractibles;
+            ItemID.Sets.SortingPriorityRopes[Type] = ValueSet.SortingPriorityRopes;
+            ItemID.Sets.SortingPriorityPainting[Type] = ValueSet.SortingPriorityPainting;
+            ItemID.Sets.SortingPriorityTerraforming[Type] = ValueSet.SortingPriorityTerraforming;
+            ItemID.Sets.GamepadExtraRange[Type] = ValueSet.GamePadExtraRange;
+            ItemID.Sets.GamepadWholeScreenUseRange[Type] = ValueSet.GamePadWholeScreenUseRange;
+            ItemID.Sets.BonusMeleeSpeedMultiplier[Type] = ValueSet.BonusMeleeSpeedMultiplier;
+            ItemID.Sets.GamepadSmartQuickReach[Type] = ValueSet.GamePadSmartQuickReach;
+            ItemID.Sets.Yoyo[Type] = ValueSet.YoYo;
+            ItemID.Sets.AlsoABuildingItem[Type] = ValueSet.AlsoABuildingItem;
+            ItemID.Sets.LockOnIgnoresCollision[Type] = ValueSet.LockOnIgnoresCollision;
+            ItemID.Sets.LockOnAimAbove[Type] = ValueSet.LockOnAimAbove;
+            ItemID.Sets.LockOnAimCompensation[Type] = ValueSet.LockOnAimCompensation;
+            ItemID.Sets.SingleUseInGamepad[Type] = ValueSet.SingleUseInGamePad;
+            ItemID.Sets.Torches[Type] = ValueSet.Torch;
+            ItemID.Sets.WaterTorches[Type] = ValueSet.WaterTorch;
+            if (ValueSet.WorkBench)
+                ItemID.Sets.Workbenches = ItemID.Sets.Workbenches.ArrayAdd((short) Type);
+            ItemID.Sets.Glowsticks[Type] = ValueSet.GlowStick;
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = ValueSet.SacrificeCount;
         }
     }
