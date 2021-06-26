@@ -133,16 +133,19 @@ namespace SteviesModRedux.Common.Systems
 
         public static void CycleText()
         {
-            DrawnSplashText = string.Format(LocalizationSystem
-                    .SplashTexts[Main.rand.Next(LocalizationSystem.SplashTexts.Count)]
-                    .GetTranslation(Language.ActiveCulture),
-                Environment.MachineName.ToUpper(),
-                LocalizationSystem.SplashTexts.Count + 1,
-                Environment.MachineName,
-                ChildSafety.Disabled
-                    ? "LETSFUCKINGGOOOOOOOOOOOOOO"
-                    : "LETSFREAKINGGOOOOOOOOOOOOOO", // No need to localize these, IIRC
-                DateTime.Now.Year);
+            if (LocalizationSystem.SplashTexts.Count == 0)
+                DrawnSplashText = "nil";
+            else
+                DrawnSplashText = string.Format(LocalizationSystem
+                        .SplashTexts[Main.rand.Next(LocalizationSystem.SplashTexts.Count)]
+                        .GetTranslation(Language.ActiveCulture),
+                    Environment.UserName.ToUpper(), // Capitalized PC name
+                    LocalizationSystem.SplashTexts.Count + 1, // Splash text count
+                    Environment.UserName, // Regular PC user name
+                    ChildSafety.Disabled
+                        ? "LETSFUCKINGGOOOOOOOOOOOOOO"
+                        : "LETSFREAKINGGOOOOOOOOOOOOOO", // No need to localize these
+                    DateTime.Now.Year); // Current year
         }
     }
 }

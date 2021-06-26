@@ -37,24 +37,20 @@ namespace SteviesModRedux.Common.Systems
             foreach (string culture in GetCultures())
             foreach (string fileName in ExistingJsonFiles)
             {
-                try
+                string filePath = GetFilePath(culture, fileName);
+                if (!Mod.FileExists(filePath))
+                    break;
+                using Stream stream = Mod.GetFileStream(filePath);
+                foreach ((string s, Dictionary<string, string> dictionary) in
+                    JsonUtilities.DeserializeJsonFromStream<Dictionary<string, Dictionary<string, string>>>(stream))
                 {
-                    using Stream stream = Mod.GetFileStream(GetFilePath(culture, fileName));
-                    foreach ((string s, Dictionary<string, string> dictionary) in
-                        JsonUtilities.DeserializeJsonFromStream<Dictionary<string, Dictionary<string, string>>>(stream))
-                    {
-                        foreach ((string key, string value) in dictionary)
-                            GetOrCreateTranslation($"{s}.{key}").AddTranslation(culture, value);
-                    }
-                }
-                catch (KeyNotFoundException)
-                {
-                    // ignore if localization file doesn't exist
+                    foreach ((string key, string value) in dictionary)
+                        GetOrCreateTranslation($"{s}.{key}").AddTranslation(culture, value);
                 }
             }
 
             foreach (ModTranslation translation in AutoRegisteredTranslations.Values)
-                Mod.AddTranslation(translation);
+                LocalizationLoader.AddTranslation(translation);
         }
 
         public override void PostSetupContent()
@@ -64,18 +60,12 @@ namespace SteviesModRedux.Common.Systems
             // In post-setup content to allow other mods to register localizations
             // following the same format, if they wish to register their own
             // (https://github.com/Steviegt6/SteviesModRedux/wiki/Splash-Text)
-            foreach (Mod mod in ModLoader.Mods)
-            {
-                ICollection<ModTranslation> modTranslations = (typeof(Mod)
-                    .GetField("translations", ReflectionUtilities.AllFlags)
-                    ?.GetValue(mod) as IDictionary<string, ModTranslation>)?.Values;
+            ICollection<ModTranslation> modTranslations = (typeof(LocalizationLoader)
+                .GetField("translations", ReflectionUtilities.AllFlags)
+                ?.GetValue(null) as IDictionary<string, ModTranslation>)?.Values;
 
-                if (modTranslations == null)
-                    continue;
-
-                foreach (ModTranslation translation in modTranslations.Where(x => x.Key.Contains(".Splashes.")))
-                    SplashTexts.Add(translation);
-            }
+            foreach (ModTranslation translation in modTranslations.Where(x => x.Key.Contains(".Splashes.")))
+                SplashTexts.Add(translation);
 
             ModMenuSplashTextSystem.CycleText();
         }
@@ -88,7 +78,7 @@ namespace SteviesModRedux.Common.Systems
             if (AutoRegisteredTranslations.ContainsKey(key))
                 return AutoRegisteredTranslations[key];
 
-            ModTranslation translation = Mod.CreateTranslation(key);
+            ModTranslation translation = LocalizationLoader.CreateTranslation(Mod, key);
             AutoRegisteredTranslations.Add(key, translation);
             return translation;
         }

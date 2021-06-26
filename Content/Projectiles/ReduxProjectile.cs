@@ -1,10 +1,11 @@
-﻿using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
 
 namespace SteviesModRedux.Content.Projectiles
 {
     public abstract class ReduxProjectile : ModProjectile
     {
         public override string Texture =>
-            ModContent.TextureExists(base.Texture) ? base.Texture : "ModLoader/UnloadedItem";
+            ModContent.RequestIfExists<Texture2D>(base.Texture, out _) ? base.Texture : "ModLoader/UnloadedItem";
     }
 }

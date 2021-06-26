@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
@@ -7,7 +8,7 @@ namespace SteviesModRedux.Content.Items
     public abstract class ReduxItem : ModItem
     {
         public override string Texture =>
-            ModContent.TextureExists(base.Texture) ? base.Texture : "ModLoader/UnloadedItem";
+            ModContent.RequestIfExists<Texture2D>(base.Texture, out _) ? base.Texture : "ModLoader/UnloadedItem";
 
         public abstract int SacrificeCount { get; }
 
