@@ -14,8 +14,8 @@ namespace SteviesModRedux.Common.Systems
         {
             MonoModHooks.RequestNativeAccess();
 
-            new Hook(typeof(ModLoader).GetMethodForced("Mods_Unload"),
-                typeof(UnloadValueSettingSystem).GetMethodForced(nameof(HijackUnloading))).Apply();
+            new Hook(typeof(ModLoader).GetCachedMethod("Mods_Unload"),
+                typeof(UnloadValueSettingSystem).GetCachedMethod(nameof(HijackUnloading))).Apply();
         }
 
         private static void HijackUnloading(Action orig)

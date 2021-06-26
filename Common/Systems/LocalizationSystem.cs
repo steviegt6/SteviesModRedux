@@ -60,9 +60,9 @@ namespace SteviesModRedux.Common.Systems
             // In post-setup content to allow other mods to register localizations
             // following the same format, if they wish to register their own
             // (https://github.com/Steviegt6/SteviesModRedux/wiki/Splash-Text)
-            ICollection<ModTranslation> modTranslations = (typeof(LocalizationLoader)
-                .GetField("translations", ReflectionUtilities.AllFlags)
-                ?.GetValue(null) as IDictionary<string, ModTranslation>)?.Values;
+            ICollection<ModTranslation> modTranslations = typeof(LocalizationLoader)
+                .GetCachedField("translations")
+                .GetValue<IDictionary<string, ModTranslation>>(null).Values;
 
             foreach (ModTranslation translation in modTranslations.Where(x => x.Key.Contains(".Splashes.")))
                 SplashTexts.Add(translation);

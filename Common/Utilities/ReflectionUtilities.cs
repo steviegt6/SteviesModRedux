@@ -1,42 +1,127 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace SteviesModRedux.Common.Utilities
 {
     public static class ReflectionUtilities
     {
-        /// <summary>
-        ///     Includes <see cref="BindingFlags.Public"/>, <see cref="BindingFlags.NonPublic"/>, <see cref="BindingFlags.Instance"/>, and <see cref="BindingFlags.Static"/>.
-        /// </summary>
-        public static BindingFlags AllFlags => BindingFlags.Public
-                                               | BindingFlags.NonPublic
-                                               | BindingFlags.Instance
-                                               | BindingFlags.Static;
+        #region Cache
 
-        /// <summary>
-        ///     Equivalent of calling <see cref="Type.GetMethod(string, BindingFlags)"/> with the given <paramref name="type"/> and <paramref name="method"/>, but <see cref="AllFlags"/> is used.
-        /// </summary>
-        public static MethodInfo GetMethodForced(this Type type, string method) => type.GetMethod(method, AllFlags);
+        public enum ReflectionType
+        {
+            Field,
+            Property,
+            Method,
+            Constructor,
+            Type,
+        }
 
-        public static TFieldType GetField<TType, TFieldType>(this TType obj, string field) =>
-            (TFieldType) typeof(TType).GetField(field, AllFlags)?.GetValue(obj);
+        private static Dictionary<ReflectionType, Dictionary<string, object>> ReflectionCache =>
+            new()
+            {
+                {ReflectionType.Field, new Dictionary<string, object>()},
+                {ReflectionType.Property, new Dictionary<string, object>()},
+                {ReflectionType.Type, new Dictionary<string, object>()},
+                {ReflectionType.Constructor, new Dictionary<string, object>()},
+                {ReflectionType.Method, new Dictionary<string, object>()}
+            };
 
-        public static void SetField<TType, TFieldType>(this TType obj, string field, TFieldType value) =>
-            typeof(TType).GetField(field, AllFlags)?.SetValue(obj, value);
+        public static BindingFlags UniversalFlags => BindingFlags.Public | BindingFlags.NonPublic |
+                                                     BindingFlags.Instance | BindingFlags.Static;
 
-        public static TFieldType GetProperty<TType, TFieldType>(this TType obj, string property) =>
-            (TFieldType) typeof(TType).GetProperty(property, AllFlags)?.GetValue(obj);
+        public static Type GetCachedType(this Assembly assembly, string typeName) =>
+            RetrieveFromCache(ReflectionType.Type, typeName, () => assembly.GetType(typeName));
 
-        public static void SetProperty<TType, TFieldType>(this TType obj, string property, TFieldType value) =>
-            typeof(TType).GetProperty(property, AllFlags)?.SetValue(obj, value);
+        public static FieldInfo GetCachedField(this Type type, string fieldName) =>
+            RetrieveFromCache(ReflectionType.Field, GetFieldNameForCache(type, fieldName),
+                () => type.GetField(fieldName, UniversalFlags));
 
-        public static MethodInfo GetMethod<TType>(this TType obj, string method) =>
-            typeof(TType).GetMethodForced(method);
+        public static PropertyInfo GetCachedProperty(this Type type, string propertyName) =>
+            RetrieveFromCache(ReflectionType.Property, GetPropertyNameForCache(type, propertyName),
+                () => type.GetProperty(propertyName, UniversalFlags));
 
-        public static void InvokeMethod<TType>(this TType obj, string method, params object[] parameters) =>
-            obj.GetMethod(method).Invoke(obj, parameters);
+        public static ConstructorInfo GetCachedConstructor(this Type type, params Type[] types) => RetrieveFromCache(
+            ReflectionType.Constructor, GetConstructorNameForCache(type, types),
+            () => type.GetConstructor(UniversalFlags, null, types, null));
 
-        public static TReturn InvokeMethod<TType, TReturn>(this TType obj, string method, params object[] parameters) =>
-            (TReturn) obj.GetMethod(method).Invoke(obj, parameters);
+        public static MethodInfo GetCachedMethod(this Type type, string methodName) => RetrieveFromCache(
+            ReflectionType.Method, GetMethodNameForCache(type, methodName),
+            () => type.GetMethod(methodName, UniversalFlags));
+
+        public static object InvokeUnderlyingMethod(this FieldInfo field, string methodName, object fieldInstance,
+            params object[] parameters) => field.FieldType.GetCachedMethod(methodName)
+            .Invoke(field.GetValue(fieldInstance), parameters);
+
+        public static string GetFieldNameForCache(Type type, string fieldName)
+        {
+            string assemblyName = type.Assembly.GetName().Name;
+            string typeName = type.Name;
+            return $"{assemblyName}.{typeName}.{fieldName}";
+        }
+
+        public static string GetPropertyNameForCache(Type type, string property)
+        {
+            string assemblyName = type.Assembly.GetName().Name;
+            string typeName = type.Name;
+            return $"{assemblyName}.{typeName}.{property}";
+        }
+
+        public static string GetConstructorNameForCache(Type type, params Type[] types)
+        {
+            string assemblyName = type.Assembly.GetName().Name;
+            string typeName = type.Name;
+            List<string> typeNames = types.Select(cType => cType.Name).ToList();
+            return $"{assemblyName}.{typeNames}::{{{string.Join(",", typeNames)}}}";
+        }
+
+        public static string GetMethodNameForCache(Type type, string method)
+        {
+            string assemblyName = type.Assembly.GetName().Name;
+            string typeName = type.Name;
+            return $"{assemblyName}.{typeName}::{method}";
+        }
+
+        private static TReturn RetrieveFromCache<TReturn>(ReflectionType refType, string key, Func<TReturn> fallback)
+        {
+            if (ReflectionCache[refType].ContainsKey(key))
+                return (TReturn)ReflectionCache[refType][key];
+
+            TReturn value = fallback();
+            ReflectionCache[refType].Add(key, value);
+            return value;
+        }
+
+        #endregion
+
+        public static TFieldType GetFieldValue<TType, TFieldType>(this TType obj, string field) =>
+            (TFieldType)typeof(TType).GetCachedField(field)?.GetValue(obj);
+
+        public static void SetFieldValue<TType, TFieldType>(this TType obj, string field, TFieldType value) =>
+            typeof(TType).GetCachedField(field)?.SetValue(obj, value);
+
+        public static TFieldType GetPropertyValue<TType, TFieldType>(this TType obj, string property) =>
+            (TFieldType)typeof(TType).GetCachedProperty(property)?.GetValue(obj);
+
+        public static void SetPropertyValue<TType, TFieldType>(this TType obj, string property, TFieldType value) =>
+            typeof(TType).GetCachedProperty(property)?.SetValue(obj, value);
+
+        public static FieldInfo GetCachedField<TType>(string fieldName) => typeof(TType).GetCachedField(fieldName);
+
+        public static PropertyInfo GetCachedProperty<TType>(string propertyName) =>
+            typeof(TType).GetCachedProperty(propertyName);
+
+        public static void SetToNewInstance(this FieldInfo field, object fieldInstance = null,
+            object constructedInstance = null) => field.SetValue(fieldInstance,
+            constructedInstance ?? Activator.CreateInstance(field.FieldType));
+
+        public static void SetToNewInstance(this PropertyInfo property, object propertyInstance = null,
+            object constructedInstance = null) => property.SetValue(propertyInstance,
+            constructedInstance ?? Activator.CreateInstance(property.PropertyType));
+
+        public static T GetValue<T>(this FieldInfo field, object fieldInstance) => (T)field.GetValue(fieldInstance);
+
+        public static T GetValue<T>(this PropertyInfo property, object propertyInstance) => (T)property.GetValue(propertyInstance);
     }
 }

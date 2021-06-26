@@ -32,9 +32,9 @@ namespace SteviesModRedux.Common.Systems
             MonoModHooks.RequestNativeAccess();
 
             new Hook(
-                typeof(ModLoader).Assembly.GetType("Terraria.ModLoader.MenuLoader")!.GetMethodForced(
+                typeof(ModLoader).Assembly.GetType("Terraria.ModLoader.MenuLoader")!.GetCachedMethod(
                     "UpdateAndDrawModMenu"),
-                typeof(ModMenuSplashTextSystem).GetMethodForced(nameof(OverlaySplashText))).Apply();
+                typeof(ModMenuSplashTextSystem).GetCachedMethod(nameof(OverlaySplashText))).Apply();
         }
 
         private static void OverlaySplashText(Action<SpriteBatch, GameTime, Color, float, float> orig,
