@@ -7,6 +7,8 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
     {
         public static int[] Ingredients = {ItemID.Handgun, ItemID.CoinGun};
 
+        public override ItemSet ValueSet => base.ValueSet.SetForceCoinsToDisplayStats(true);
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

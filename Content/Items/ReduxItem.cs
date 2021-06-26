@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SteviesModRedux.Common.Sets;
 using SteviesModRedux.Common.Utilities;
 using Terraria;
 using Terraria.DataStructures;
@@ -147,6 +148,8 @@ namespace SteviesModRedux.Content.Items
             public virtual bool GlowStick { get; protected set; }
 
             public virtual int SacrificeCount { get; protected set; }
+
+            public bool ForceCoinsToDisplayStats { get; protected set; }
 
             public ItemSet SetProcessedAfterNormalContentSamples(bool value)
             {
@@ -549,6 +552,12 @@ namespace SteviesModRedux.Content.Items
                 SacrificeCount = value;
                 return this;
             }
+
+            public ItemSet SetForceCoinsToDisplayStats(bool value)
+            {
+                ForceCoinsToDisplayStats = value;
+                return this;
+            }
         }
 
         public override string Texture =>
@@ -655,6 +664,8 @@ namespace SteviesModRedux.Content.Items
                 ItemID.Sets.Workbenches = ItemID.Sets.Workbenches.ArrayAdd((short) Type);
             ItemID.Sets.Glowsticks[Type] = ValueSet.GlowStick;
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = ValueSet.SacrificeCount;
+            if (ValueSet.ForceCoinsToDisplayStats)
+                ExtraItemTags.CoinStatDisplay.Add(true, Type);
         }
     }
 }

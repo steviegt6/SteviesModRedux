@@ -1,32 +1,32 @@
 ﻿using System;
 using System.Linq;
-using IL.Terraria;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using SteviesModRedux.Common.AdaptiveTagGroups;
 using SteviesModRedux.Common.UnloadContext;
 using SteviesModRedux.Common.Utilities;
-using SteviesModRedux.Content.Items.Weapons.Ranger.Guns;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Tags;
-using Player = Terraria.Player;
 
 namespace SteviesModRedux.Common.Sets
 {
-    public class ExtraItemTags //: ILoadable
+    public class ExtraItemTags : ILoadable
     {
-        [NullifyUponUnload] public static TagData CoinStatDisplay => ContentTags.Get<ItemTags>(nameof(CoinStatDisplay));
+        [NullifyUponUnload] public static TagData CoinStatDisplay { get; private set; }
 
-        public static void Load(Mod mod)
+        public void Load(Mod mod)
         {
-            CoinStatDisplay.Add(true, ItemID.CoinGun, ModContent.ItemType<CoinPistol>());
+            CoinStatDisplay = ContentTags.Get<AdaptiveItemTags>(nameof(CoinStatDisplay));
+            CoinStatDisplay.Add(true, ItemID.CoinGun);
 
-            Main.MouseText_DrawItemTooltip_GetLinesInfo += SwapCoinGun;
+            IL.Terraria.Main.MouseText_DrawItemTooltip_GetLinesInfo += SwapCoinGun;
         }
 
-        /*public void Unload()
+        void ILoadable.Unload()
         {
-        }*/
+        }
 
         private static void SwapCoinGun(ILContext il)
         {
@@ -54,7 +54,7 @@ namespace SteviesModRedux.Common.Sets
             c.Index++;
             c.Emit(OpCodes.Pop);
 
-            c.EmitDelegate<Func<bool>>(() => CoinStatDisplay.GetEntries().Any(item => Terraria.Main.LocalPlayer.HasItem(item)));
+            c.EmitDelegate<Func<bool>>(() => CoinStatDisplay.GetEntries().Any(item => Main.LocalPlayer.HasItem(item)));
         }
     }
 }

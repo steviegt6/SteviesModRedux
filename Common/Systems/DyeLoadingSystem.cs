@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using SteviesModRedux.Content.Items.Dyes.Unused;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -12,7 +13,7 @@ namespace SteviesModRedux.Common.Systems
     {
         public static List<(int, string, string)> ArmorShaders { get; private set; }
 
-        public override void Load()
+        public override void OnModLoad()
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
@@ -29,8 +30,7 @@ namespace SteviesModRedux.Common.Systems
         public static ArmorShaderData CreateArmorData(Ref<Effect> effectReference, string pass) =>
             new(effectReference, pass);
 
-        public static Ref<Effect> GetEffect(string effectPath) =>
-            new(ModContent.Request<Effect>("SteviesModRedux/Effects/Wavy").Value);
+        public static Ref<Effect> GetEffect(string effectPath) => new(ModContent.Request<Effect>(effectPath, AssetRequestMode.ImmediateLoad).Value);
 
         public static List<(int, string, string)> PopulateArmorShaders() => new()
         {

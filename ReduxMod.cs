@@ -13,12 +13,7 @@ namespace SteviesModRedux
         {
             Instance = this;
         }
-
-        public override void Load()
-        {
-            ExtraItemTags.Load(this);
-        }
-
+        
         public override object Call(params object[] args)
         {
             try
