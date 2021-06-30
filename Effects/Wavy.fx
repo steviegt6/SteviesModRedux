@@ -18,10 +18,22 @@ float2 uLegacyArmorSheetSize;
 
 float4 Wavy(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
-    float waveIntensity = 0.002f;
+    float waveIntensity = 0.001f;
+    float halvedX;
+    float halvedY;
 
-    coords.x -= waveIntensity * sin(uTime + coords.y * 50 + coords.x / 50);
-    coords.y -= waveIntensity * sin(uTime + coords.y * 50 + coords.x * 50);
+    if (coords.x == 0)
+        halvedX = 0;
+    else
+        halvedX = coords.x / 2;
+
+    if (coords.y == 0)
+        halvedY = 0;
+    else
+        halvedY = coords.y / 2;
+
+    coords.x -= waveIntensity * sin(uTime + halvedY * 50 + halvedX / 75);
+    coords.y -= waveIntensity * sin(uTime + halvedY * 50 + halvedX * 75);
     float4 color = tex2D(uImage0, coords);
     return color * sampleColor;
 }

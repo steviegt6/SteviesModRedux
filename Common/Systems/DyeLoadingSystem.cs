@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using SteviesModRedux.Content.Items.Dyes.Unused;
@@ -36,5 +37,10 @@ namespace SteviesModRedux.Common.Systems
         {
             (ModContent.ItemType<WavyDye>(), "SteviesModRedux/Effects/Wavy", "WavyPass")
         };
+
+        Color cum()
+        {
+            return new();
+        }
     }
 }
