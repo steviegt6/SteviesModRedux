@@ -5,7 +5,7 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 {
     public class CoinPistol : WeaponItem
     {
-        public static int[] Ingredients = {ItemID.Handgun, ItemID.CoinGun};
+        private static readonly int[] Ingredients = {ItemID.Handgun, ItemID.CoinGun};
 
         public override ItemSet ValueSet => base.ValueSet.SetForceCoinsToDisplayStats(true);
 
