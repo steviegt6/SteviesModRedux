@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SteviesModRedux.Common.UnloadContext;
 using SteviesModRedux.Common.Utilities;
+using SteviesModRedux.Common.Utilities.UnloadContext;
 using Terraria.Localization;
 using Terraria.ModLoader;
 

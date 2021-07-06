@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SteviesModRedux.Common.UnloadContext
+namespace SteviesModRedux.Common.Utilities.UnloadContext
 {
     /// <summary>
     ///     Indicates what value a field shit be set to once the mod unloads. <br />

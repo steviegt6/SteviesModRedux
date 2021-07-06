@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SteviesModRedux.Common.UnloadContext
+namespace SteviesModRedux.Common.Utilities.UnloadContext
 {
     /// <summary>
     ///     Attribute that specifies that, once the mod is unloaded, the associated field's value should be set to <c>null</c>.

@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Reflection;
 using MonoMod.RuntimeDetour;
-using SteviesModRedux.Common.UnloadContext;
 using SteviesModRedux.Common.Utilities;
+using SteviesModRedux.Common.Utilities.UnloadContext;
 using Terraria.ModLoader;
 
 namespace SteviesModRedux.Common.Systems
