@@ -564,20 +564,11 @@ namespace SteviesModRedux.Content.Items
             }
         }
 
-        public override string Texture
-        {
-            get
-            {
-                if (!OverwriteTextureConditionally)
-                    return base.Texture;
+        public override string Texture => OverwriteTexture
+            ? "ModLoader/UnloadedItem"
+            : base.Texture;
 
-                return ModContent.RequestIfExists<Texture2D>(base.Texture, out _)
-                    ? base.Texture
-                    : "ModLoader/UnloadedItem";
-            }
-        }
-
-        public virtual bool OverwriteTextureConditionally => true;
+        public virtual bool OverwriteTexture => true;
 
         protected ItemSet ItemValues;
 

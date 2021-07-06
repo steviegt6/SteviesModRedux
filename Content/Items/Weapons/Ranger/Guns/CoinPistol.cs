@@ -10,6 +10,8 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 
         public override ItemSet ValueSet => base.ValueSet.SetForceCoinsToDisplayStats(true);
 
+        public override bool OverwriteTexture => true;
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

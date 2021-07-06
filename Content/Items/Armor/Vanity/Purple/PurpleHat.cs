@@ -12,8 +12,6 @@ namespace SteviesModRedux.Content.Items.Armor.Vanity.Purple
         private static readonly IntegerTuple[] Ingredients =
             {(ItemID.Silk, 20), ItemID.PurpleDye, (ItemID.SnowBlock, 5)};
 
-        public override bool OverwriteTextureConditionally => false;
-
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

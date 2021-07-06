@@ -11,6 +11,8 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
     {
         public static IntegerTuple[] Ingredients = {ItemID.OnyxBlaster, ItemID.ClockworkAssaultRifle};
 
+        public override bool OverwriteTexture => true;
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
