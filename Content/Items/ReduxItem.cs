@@ -568,7 +568,7 @@ namespace SteviesModRedux.Content.Items
             ? "ModLoader/UnloadedItem"
             : base.Texture;
 
-        public virtual bool OverwriteTexture => true;
+        public virtual bool OverwriteTexture => false;
 
         protected ItemSet ItemValues;
 
