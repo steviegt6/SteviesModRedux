@@ -33,7 +33,7 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 
         public override void AddRecipes()
         {
-            // base.CreateRecipe();
+            base.AddRecipes();
 
             CreateRecipe()
                 .AddIngredients(Ingredients)

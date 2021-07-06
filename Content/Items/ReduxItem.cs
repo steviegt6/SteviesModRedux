@@ -1,13 +1,16 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using SteviesModRedux.Common.Sets;
 using SteviesModRedux.Common.Utilities;
 using SteviesModRedux.Common.Utilities.ImplicitConverters;
+using SteviesModRedux.Content.Recipes;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SteviesModRedux.Content.Items
@@ -561,8 +564,20 @@ namespace SteviesModRedux.Content.Items
             }
         }
 
-        public override string Texture =>
-            ModContent.RequestIfExists<Texture2D>(base.Texture, out _) ? base.Texture : "ModLoader/UnloadedItem";
+        public override string Texture
+        {
+            get
+            {
+                if (!OverwriteTextureConditionally)
+                    return base.Texture;
+
+                return ModContent.RequestIfExists<Texture2D>(base.Texture, out _)
+                    ? base.Texture
+                    : "ModLoader/UnloadedItem";
+            }
+        }
+
+        public virtual bool OverwriteTextureConditionally => true;
 
         protected ItemSet ItemValues;
 
@@ -590,6 +605,16 @@ namespace SteviesModRedux.Content.Items
             }
 
             return total;
+        }
+
+        public override void AddRecipes()
+        {
+            EmptyRecipe emptyCondition = new();
+
+            Mod.CreateRecipe(Type)
+                .AddCondition(new Recipe.Condition(NetworkText.FromLiteral(emptyCondition.Description),
+                    (recipe) => emptyCondition.RecipeAvailable(recipe)))
+                .Register();
         }
 
         public virtual void SetItemSetValues()

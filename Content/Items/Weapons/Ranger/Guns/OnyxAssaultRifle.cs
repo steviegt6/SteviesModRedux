@@ -22,6 +22,8 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
+
             Item.CloneDefaults(ItemID.ClockworkAssaultRifle);
             //Item.useAnimation *= 2;
             //Item.useTime *= 2;
@@ -34,6 +36,8 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
             Vector2 velocity, int type,
             int damage, float knockback)
         {
+            base.Shoot(player, source, position, velocity, type, damage, knockback);
+
             switch (player.itemAnimation)
             {
                 case < 5:
