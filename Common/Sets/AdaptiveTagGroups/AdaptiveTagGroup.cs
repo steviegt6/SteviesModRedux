@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SteviesModRedux.Common.Utilities;
 using Terraria.ModLoader.Tags;
 
-namespace SteviesModRedux.Common.AdaptiveTagGroups
+namespace SteviesModRedux.Common.Sets.AdaptiveTagGroups
 {
     public abstract class AdaptiveTagGroup : TagGroup
     {

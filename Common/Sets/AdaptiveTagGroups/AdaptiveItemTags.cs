@@ -1,7 +1,7 @@
 ﻿using System;
 using Terraria.ModLoader;
 
-namespace SteviesModRedux.Common.AdaptiveTagGroups
+namespace SteviesModRedux.Common.Sets.AdaptiveTagGroups
 {
     public class AdaptiveItemTags : AdaptiveTagGroup
     {

@@ -2,7 +2,7 @@
 using System.Linq;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using SteviesModRedux.Common.AdaptiveTagGroups;
+using SteviesModRedux.Common.Sets.AdaptiveTagGroups;
 using SteviesModRedux.Common.UnloadContext;
 using SteviesModRedux.Common.Utilities;
 using Terraria;
