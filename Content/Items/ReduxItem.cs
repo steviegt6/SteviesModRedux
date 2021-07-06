@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SteviesModRedux.Common.Sets;
 using SteviesModRedux.Common.Utilities;
+using SteviesModRedux.Common.Utilities.ImplicitConverters;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -577,15 +578,15 @@ namespace SteviesModRedux.Content.Items
             SetItemSetValues();
         }
 
-        public virtual int GetValueFromItems(params int[] items)
+        public virtual int GetValueFromItems(params IntegerTuple[] items)
         {
             int total = 0;
 
-            foreach (int item in items)
+            foreach ((int itemType, int itemAmount) in items)
             {
                 Item instance = new();
-                instance.SetDefaults(item, true);
-                total += instance.value;
+                instance.SetDefaults(itemType, true);
+                total += instance.value * itemAmount;
             }
 
             return total;

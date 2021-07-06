@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using SteviesModRedux.Common.Utilities.ImplicitConverters;
+using Terraria;
 
 namespace SteviesModRedux.Common.Utilities
 {
@@ -12,7 +13,7 @@ namespace SteviesModRedux.Common.Utilities
             return recipe;
         }
 
-        public static Recipe AddIngredients(this Recipe recipe, params (int, int)[] items)
+        public static Recipe AddIngredients(this Recipe recipe, params IntegerTuple[] items)
         {
             foreach ((int item, int amount) in items)
                 recipe.AddIngredient(item, amount);

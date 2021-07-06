@@ -1,11 +1,12 @@
 ﻿using SteviesModRedux.Common.Utilities;
+using SteviesModRedux.Common.Utilities.ImplicitConverters;
 using Terraria.ID;
 
 namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 {
     public class CoinPistol : WeaponItem
     {
-        private static readonly int[] Ingredients = {ItemID.Handgun, ItemID.CoinGun};
+        private static readonly IntegerTuple[] Ingredients = {ItemID.Handgun, ItemID.CoinGun};
 
         public override ItemSet ValueSet => base.ValueSet.SetForceCoinsToDisplayStats(true);
 

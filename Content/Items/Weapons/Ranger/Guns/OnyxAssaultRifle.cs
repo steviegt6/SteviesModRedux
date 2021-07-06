@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SteviesModRedux.Common.Utilities;
+using SteviesModRedux.Common.Utilities.ImplicitConverters;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -8,7 +9,7 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 {
     public class OnyxAssaultRifle : WeaponItem
     {
-        public static int[] Ingredients = {ItemID.OnyxBlaster, ItemID.ClockworkAssaultRifle};
+        public static IntegerTuple[] Ingredients = {ItemID.OnyxBlaster, ItemID.ClockworkAssaultRifle};
 
         public override void SetStaticDefaults()
         {
@@ -26,6 +27,7 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
             //Item.useTime *= 2;
             Item.damage += 5;
             Item.reuseDelay = (int) (Item.reuseDelay * 1.5f);
+            Item.value = GetValueFromItems(Ingredients);
         }
 
         public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position,
