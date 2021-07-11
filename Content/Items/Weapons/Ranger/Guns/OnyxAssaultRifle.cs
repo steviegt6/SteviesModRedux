@@ -9,7 +9,7 @@ namespace SteviesModRedux.Content.Items.Weapons.Ranger.Guns
 {
     public class OnyxAssaultRifle : WeaponItem
     {
-        public static IntegerTuple[] Ingredients = {ItemID.OnyxBlaster, ItemID.ClockworkAssaultRifle};
+        private static readonly IntegerTuple[] Ingredients = {ItemID.OnyxBlaster, ItemID.ClockworkAssaultRifle};
 
         public override bool OverwriteTexture => true;
 

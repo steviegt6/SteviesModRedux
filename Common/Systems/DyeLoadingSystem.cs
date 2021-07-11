@@ -37,10 +37,5 @@ namespace SteviesModRedux.Common.Systems
         {
             (ModContent.ItemType<WavyDye>(), "SteviesModRedux/Effects/Wavy", "WavyPass")
         };
-
-        Color cum()
-        {
-            return new();
-        }
     }
 }
