@@ -1,5 +1,4 @@
 using System;
-using SteviesModRedux.Common.Sets;
 using SteviesModRedux.Common.Systems;
 using Terraria.ModLoader;
 
